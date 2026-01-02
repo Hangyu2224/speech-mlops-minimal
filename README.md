@@ -73,6 +73,15 @@ On every push / pull request, CI will:
 
 ## How to trigger CI
 - Push commits to main/master, or open a Pull Request.
+```bash
+```bash
+python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
+ruff check .
+pytest -q
+docker build -t speech-api:dev .
+```
+
 - CI will automatically run in GitHub Actions.
 
 ## Local commands (same as CI)
