@@ -57,12 +57,12 @@ jobs:
           docker tag speech-api:${SHORT_SHA} hangyuluo/speech-mlops-minimal:${SHORT_SHA}
           docker push hangyuluo/speech-mlops-minimal:${SHORT_SHA}
 
-      - name: Deploy to Kubernetes
-        run: |
-          SHORT_SHA="${GITHUB_SHA:0:7}"  # 重新获取相同的短哈希值
-          kubectl set image deployment/speech-api speech-api=hangyuluo/speech-mlops-minimal:${SHORT_SHA} --record
-          kubectl rollout status deployment/speech-api
+      # - name: Deploy to Kubernetes
+      #   run: |
+      #     SHORT_SHA="${GITHUB_SHA:0:7}"  # 重新获取相同的短哈希值
+      #     kubectl set image deployment/speech-api speech-api=hangyuluo/speech-mlops-minimal:${SHORT_SHA} --record
+      #     kubectl rollout status deployment/speech-api
 
-      - name: Rollback if deploy fails
-        run: |
-          kubectl rollout undo deployment/speech-api
+      # - name: Rollback if deploy fails
+      #   run: |
+      #     kubectl rollout undo deployment/speech-api
