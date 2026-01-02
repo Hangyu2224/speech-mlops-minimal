@@ -13,7 +13,7 @@ docker run --rm -p 8000:8000 speech-api:dev
 docker-compose up -d
 ```
 
-# Test
+## Test
 ```bash
 curl htttp://localhost:8000/health
 curl -X POST http://localhost:8000/infer -H "Content-Type: application/json" -d "{\"text\":\"hello\"}"
