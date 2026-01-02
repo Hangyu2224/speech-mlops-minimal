@@ -1,13 +1,12 @@
-from fastapi.testclient import TestClient
-
-import sys
 import os
+import sys
+
+from fastapi.testclient import TestClient
 
 # 将上一级目录添加到模块搜索路径
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app import app
-
 
 client = TestClient(app)
 
