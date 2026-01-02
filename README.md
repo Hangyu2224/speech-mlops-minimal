@@ -63,17 +63,7 @@ API: http://localhost:${MINIO_PORT:-9000}
 Console: http://localhost:${MINIO_CONSOLE_PORT:-9001}
 
 # Day 3: CI (GitHub Actions)
-
-## What CI does
-On every push / pull request, CI will:
-1) Install dependencies
-2) Run lint (ruff)
-3) Run tests (pytest)
-4) Build Docker image with tag = short git sha (speech-api:<git_sha7>)
-
-## How to trigger CI
-- Push commits to main/master, or open a Pull Request.
-```bash
+## Local commands (same as CI)
 ```bash
 python -m pip install -r requirements.txt
 python -m pip install -r requirements-dev.txt
@@ -82,12 +72,21 @@ pytest -q
 docker build -t speech-api:dev .
 ```
 
-- CI will automatically run in GitHub Actions.
+## What CI does
+On every push / pull request, CI will:
+1) Install dependencies
+2) Run lint (ruff)
+3) Run tests (pytest)
+4) Build Docker image with tag = short git sha 
 
-## Local commands (same as CI)
+## How to trigger CI
+- Push commits to main/master, or open a Pull Request.
 ```bash
-python -m pip install -r requirements.txt
-python -m pip install -r requirements-dev.txt
-ruff check .
-pytest -q
-docker build -t speech-api:dev .
+git add .
+git commit -m "day3: add minimal CI"
+git branch -M main
+git remote add origin git@github.com:Hangyu2224/speech-mlops-minimal.git
+git push -u origin main
+```
+
+- CI will automatically run in GitHub Actions.
