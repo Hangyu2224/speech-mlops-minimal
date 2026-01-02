@@ -25,7 +25,6 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install -r requirements-dev.txt
 
-
       - name: Lint (ruff)
         run: |
           ruff check .
@@ -35,9 +34,9 @@ jobs:
           pytest -q
 
       # 可选但推荐，验证 compose 文件能解析（避免 Day2 的编排在 CI 里悄悄坏掉）
-      - name: Validate docker-compose (optionali)
+      - name: Validate docker-compose (optional)
         run: |
-          if [ -f .env.example] && [ ! -f .env ]; then copy .env.example .env; fi
+          if [ -f .env.example] && [ ! -f .env ]; then cp .env.example .env; fi
           docker compose config
 
       - name: Docker build
@@ -54,17 +53,16 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag speech-api:${{ github.sha }} hangyuluo/speech-mlops-minimal/speech-api:${{ github.sha }}
-          docker push your-docker-repo/speech-api:${{ github.sha }}
+          SHORT_SHA="${GITHUB_SHA:0:7}"  # 重新获取相同的短哈希值
+          docker tag speech-api:${SHORT_SHA} hangyuluo/speech-mlops-minimal/speech-api:${SHORT_SHA}
+          docker push hangyuluo/speech-mlops-minimal/speech-api:${SHORT_SHA}
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl set image deployment/speech-api speech-api=hangyuluo/speech-mlops-minimal/speech-api:${{ github.sha }} --record
+          SHORT_SHA="${GITHUB_SHA:0:7}"  # 重新获取相同的短哈希值
+          kubectl set image deployment/speech-api speech-api=hangyuluo/speech-mlops-minimal/speech-api:${SHORT_SHA} --record
           kubectl rollout status deployment/speech-api
 
       - name: Rollback if deploy fails
         run: |
           kubectl rollout undo deployment/speech-api
-
-
-
