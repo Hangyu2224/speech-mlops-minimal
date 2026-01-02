@@ -55,7 +55,7 @@ jobs:
         run: |
           SHORT_SHA="${GITHUB_SHA:0:7}"  # 重新获取相同的短哈希值
           docker tag speech-api:${SHORT_SHA} hangyuluo/speech-mlops-minimal:${SHORT_SHA}
-          docker push hangyuluo/speech-mlops-minimal/speech-api:${SHORT_SHA}
+          docker push hangyuluo/speech-mlops-minimal:${SHORT_SHA}
 
       - name: Deploy to Kubernetes
         run: |
