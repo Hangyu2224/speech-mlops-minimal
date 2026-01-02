@@ -1,0 +1,14 @@
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+exclude = [
+  ".venv",
+  "__pycache__",
+  "logs",
+  "data",
+  "models"
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]  # E/F: 基础错误，I: import 排序
+ignore = []

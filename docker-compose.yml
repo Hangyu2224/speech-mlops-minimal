@@ -1,0 +1,50 @@
+version: "3.13"
+services:
+  # API服务（FastAPI）
+  api:
+    build: .
+    ports:
+      - "8000:8000"  # 映射端口8000
+    networks:
+      - backend  # 指定网络
+    volumes:
+      - ./app:/app  # 持久化本地代码
+    environment:
+      - PYTHONUNBUFFERED=1  # 防止缓冲输出，实时输出日志
+
+  # MinIO服务（模拟对象存储）
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ACCESS_KEY: "minio"
+      MINIO_SECRET_KEY: "minio123"
+    command: server /data
+    ports:
+      - "9000:9000"  # 映射MinIO端口
+    networks:
+      - backend
+    volumes:
+      - minio-data:/data  # 持久化数据
+
+  # MLflow服务（可选，模拟实验和模型管理）
+  mlflow:
+    image: ubuntu/mlflow:2.1.1_1.0-22.04
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+    ports:
+      - "5000:5000"  # 映射端口
+    networks:
+      - backend
+    volumes:
+      - mlflow-data:/mlflow  # 持久化数据
+
+
+networks:
+  backend:
+    driver: bridge  # 定义容器间网络
+
+volumes:
+  minio-data:
+    driver: local  # 使用本地卷存储数据
+  mlflow-data:
+    driver: local  # 使用本地卷存储数据
